@@ -30,10 +30,11 @@ dependencies {
 }
 
 compileJava {
-    sourceCompatibility = 1.5
-    targetCompatibility = 1.5
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
 
-    def java5BootClassPath = System.env.JAVA5_BOOTCLASSPATH
+    def java5BootClassPath = "C:\\Java\\jdk1.6.0_37\\jre\\lib\\rt.jar"
+    //def java5BootClassPath = System.env.JAVA_HOME
     if (!(java5BootClassPath)) {
         throw new TaskInstantiationException('''ERROR:
 The environment variable JAVA5_BOOTCLASSPATH must be set to a Java 5 rt.jar.  

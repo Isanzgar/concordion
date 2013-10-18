@@ -32,6 +32,7 @@ import org.concordion.api.listener.DocumentParsingListener;
 import org.concordion.api.listener.ExecuteListener;
 import org.concordion.api.listener.RunListener;
 import org.concordion.api.listener.SpecificationProcessingListener;
+import org.concordion.api.listener.TestCommandListener;
 import org.concordion.api.listener.ThrowableCaughtListener;
 import org.concordion.api.listener.VerifyRowsListener;
 import org.concordion.internal.command.AssertEqualsCommand;
@@ -43,6 +44,7 @@ import org.concordion.internal.command.LocalTextDecorator;
 import org.concordion.internal.command.RunCommand;
 import org.concordion.internal.command.SetCommand;
 import org.concordion.internal.command.SpecificationCommand;
+import org.concordion.internal.command.TestCommand;
 import org.concordion.internal.command.ThrowableCatchingDecorator;
 import org.concordion.internal.command.ThrowableCaughtPublisher;
 import org.concordion.internal.command.VerifyRowsCommand;
@@ -86,6 +88,9 @@ public class ConcordionBuilder implements ConcordionExtender {
     private ExecuteCommand executeCommand = new ExecuteCommand();
     private RunCommand runCommand = new RunCommand();
     private VerifyRowsCommand verifyRowsCommand = new VerifyRowsCommand();
+    // ISG
+    private TestCommand testCommand = new TestCommand();
+    
     private EchoCommand echoCommand = new EchoCommand();
     private File baseOutputDir;
     private ThrowableCaughtPublisher throwableListenerPublisher = new ThrowableCaughtPublisher();
@@ -153,6 +158,11 @@ public class ConcordionBuilder implements ConcordionExtender {
     
     public ConcordionBuilder withVerifyRowsListener(VerifyRowsListener listener) {
         verifyRowsCommand.addVerifyRowsListener(listener);
+        return this;
+    }
+    
+    public ConcordionBuilder withTestCommandListener(TestCommandListener listener) {
+        testCommand.addTestCommandListener(listener);
         return this;
     }
     
@@ -243,6 +253,7 @@ public class ConcordionBuilder implements ConcordionExtender {
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "assertTrue", assertTrueCommand);
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "assertFalse", assertFalseCommand);
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "verifyRows", verifyRowsCommand);
+        withApprovedCommand(NAMESPACE_CONCORDION_2007, "testCommand", testCommand);
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "echo", echoCommand);
 
         if (target == null) {

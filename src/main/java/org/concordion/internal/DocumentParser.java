@@ -1,5 +1,8 @@
 package org.concordion.internal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Elements;
@@ -57,6 +60,13 @@ public class DocumentParser {
                     commandIsAssigned = true;
                     String expression = attribute.getValue();
                     CommandCall commandCall = new CommandCall(command, new Element(xomElement), expression, resource);
+                    
+                    // ISG
+                    
+                    List<CommandCall> listCommand = new ArrayList<CommandCall>();
+                    listCommand.add(commandCall);
+                    
+                    // ISG
                     parentCommandCall.appendChild(commandCall);
                     parentCommandCall = commandCall;
                 }

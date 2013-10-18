@@ -1,9 +1,12 @@
 package org.concordion.internal.command;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 
 import org.concordion.api.AbstractCommand;
 import org.concordion.api.CommandCall;
+import org.concordion.api.CommandCallList;
 import org.concordion.api.Element;
 import org.concordion.api.Evaluator;
 import org.concordion.api.Result;
@@ -36,14 +39,52 @@ public class AssertEqualsCommand extends AbstractCommand {
         listeners.removeListener(listener);
     }
     
+    public void verifyList(CommandCallList commandCallList, Evaluator evaluator, ResultRecorder resultRecorder) {
+    	for(int i= 0; i< commandCallList.size(); i++) {
+        	System.out.println("Expessions: " + commandCallList.get(i).getExpression());
+        	System.out.println("Expessions: " + commandCallList.get(i).getExpression());
+        	Object actual = evaluator.evaluate(commandCallList.get(i).getExpression());
+        	Element element = commandCallList.get(i).getElement();
+            String expected = element.getText();
+            if (comparator.compare(actual, expected) == 0) {
+            	
+            	//System.out.println("ACTUAL: " + );
+            	System.out.println("EXPECTED TRUE: " + expected);
+            	System.out.println("EXPECTED TRUE: " + element.getText());
+            	break;
+            }
+        	
+        }
+    }
+    
     @Override
     public void verify(CommandCall commandCall, Evaluator evaluator, ResultRecorder resultRecorder) {
         Check.isFalse(commandCall.hasChildCommands(), "Nesting commands inside an 'assertEquals' is not supported");
         
         Element element = commandCall.getElement();
         
+        // ISG
+        CommandCallList list = commandCall.getChildren();
+        
+        for(int i= 0; i< list.size(); i++) {
+        	System.out.println("Expessions: " + list.get(i).getExpression());
+        	System.out.println("Expessions: " + list.get(i).getExpression());
+        	Object actual = evaluator.evaluate(list.get(i).getExpression());
+            String expected = element.getText();
+            if (comparator.compare(actual, expected) == 0) {
+            	
+            	//System.out.println("ACTUAL: " + );
+            	System.out.println("EXPECTED: " + expected);
+            	break;
+            }
+        	
+        }
+        
+        // ISG
+        
         Object actual = evaluator.evaluate(commandCall.getExpression());
         String expected = element.getText();
+
         
         if (comparator.compare(actual, expected) == 0) {
             resultRecorder.record(Result.SUCCESS);

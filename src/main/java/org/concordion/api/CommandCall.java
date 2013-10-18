@@ -1,5 +1,7 @@
 package org.concordion.api;
 
+import java.util.List;
+
 import org.concordion.internal.util.Check;
 
 /**
